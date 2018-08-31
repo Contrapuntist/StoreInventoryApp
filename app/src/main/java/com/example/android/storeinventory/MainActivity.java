@@ -132,9 +132,10 @@ public class MainActivity extends AppCompatActivity {
                         + "Product Supplier Name: " + productSupplierName + "\n"
                         + "Product Supplier Phone: " + productSupplierPhone + "\n\n";
 
-
+                // log in terminal
                 Log.i("Product Row Log", rowDetails);
 
+                // log in activity_main
                 logDbView.append(rowDetails);
             }
 
