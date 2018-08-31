@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.storeinventory.data.InventoryContract.ProductEntry;
 import com.example.android.storeinventory.data.InventoryDbHelper;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private InventoryDbHelper inventoryDbHelper;
     private SQLiteDatabase db;
+    private TextView logDbView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +29,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         inventoryDbHelper = new InventoryDbHelper(this);
+        logDbView = (TextView) findViewById(R.id.db_log);
 
+        // log db in terminal and in app.
         logCompleteDb();
 
         Button addRow = (Button) findViewById(R.id.add_row);
-
         addRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insertProduct();
+
+                // Show message confirming a new row added.
+                Toast toast = Toast.makeText(getApplicationContext(), "New row added", Toast.LENGTH_LONG);
+                toast.show();
+
+                // clear/refresh TextView displaying logs
+                logDbView.setText(null);
+
+                // Reload db log
+                logCompleteDb();
             }
         });
     }
@@ -65,9 +78,6 @@ public class MainActivity extends AppCompatActivity {
      */
     private void logCompleteDb() {
         db = inventoryDbHelper.getReadableDatabase();
-        String dbLog;
-
-        TextView logDbView = (TextView) findViewById(R.id.db_log);
 
         String[] tableAllProjection = {
                 ProductEntry._ID,
@@ -113,13 +123,14 @@ public class MainActivity extends AppCompatActivity {
                 String productSupplierPhone = cursor.getString(supplierPhoneColumnIdx);
 
 
-                String rowDetails = "Product ID: " + productId + "\n"
+                String rowDetails = "*********************************\n"
+                        + "Product ID: " + productId + "\n"
                         + "Product Name: " + productName + "\n"
                         + "Product Description: " + productDescription + "\n"
                         + "Product Price: " + Double.toString(productPrice) + "\n"
                         + "Product Quantity: " + Integer.toString(productQuantity) + "\n"
                         + "Product Supplier Name: " + productSupplierName + "\n"
-                        + "Product Supplier Phone: " + productSupplierPhone + "\n";
+                        + "Product Supplier Phone: " + productSupplierPhone + "\n\n";
 
 
                 Log.i("Product Row Log", rowDetails);
