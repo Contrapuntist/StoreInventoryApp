@@ -29,29 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         inventoryDbHelper = new InventoryDbHelper(this);
-        logDbView = (TextView) findViewById(R.id.db_log);
-
-        // log db in terminal and in app.
-        logCompleteDb();
-
-        Button addRow = (Button) findViewById(R.id.add_row);
-        addRow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insertProduct();
-
-                // Show message confirming a new row added.
-                Toast toast = Toast.makeText(getApplicationContext(), "New row added", Toast.LENGTH_LONG);
-                toast.show();
-
-                // clear/refresh TextView displaying logs
-                logDbView.setText(null);
-
-                // Reload db log
-                logCompleteDb();
-            }
-        });
-    }
+    }3
 
     private void insertProduct() {
         db = inventoryDbHelper.getWritableDatabase();

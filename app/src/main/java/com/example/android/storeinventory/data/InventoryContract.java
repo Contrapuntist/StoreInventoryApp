@@ -24,7 +24,7 @@ public final class InventoryContract{
         public final static String PRODUCT_NAME = "name";
         public final static String PRODUCT_DESCRIPTION = "description";
         public final static String PRODUCT_PRICE = "price";
-        public final static String  PRODUCT_QUANTITY = "quantity";
+        public final static String PRODUCT_QUANTITY = "quantity";
         public final static String SUPPLIER_NAME = "supplier_name";
         public final static String SUPPLIER_PHONE = "supplier_phone";
 

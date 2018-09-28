@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="product_subtext">
+        <item name="font">@font/quicksand_light</item>
+        <item name="text_color">@color/</item>
+    </style>
+
+    <style name="Theme.DeviceDefault.Light.Light.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>
