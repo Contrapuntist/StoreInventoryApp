@@ -17,7 +17,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".ProductEditorActivity"
+            android:label="@string/product_details_label"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <provider
+            android:name=".data.InventoryProvider"
+            android:authorities="com.example.android.storeinventory"
+            android:exported="false" />
     </application>
-
 </manifest>

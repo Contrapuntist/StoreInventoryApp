@@ -4,21 +4,25 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp" >
 
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/inventory_list"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentTop="true"/>-->
+    <ListView
+        android:id="@+id/inventory_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_margin="16dp"-->
-        <!--android:background="#aaaaaa"-->
-        <!--android:src="@drawable/ic_add_white_24dp"/>-->
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_new_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/sixteen_dp"
+        android:padding="@dimen/sixteen_dp"
+        android:background="#aaaaaa"
+        android:src="@drawable/ic_add_shopping_cart_white_24dp"/>
+
+
+    <!-- TODO: Add empty view in layout -->
 
 </RelativeLayout>
 

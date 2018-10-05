@@ -8,10 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="product_subtext">
-        <item name="font">@font/quicksand_light</item>
-        <item name="text_color">@color/</item>
+    <style name="form_label">
+        <item name="android:layout_width">125dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/thirty_two_dp</item>
+        <item name="android:layout_marginEnd">@dimen/thirty_two_dp</item>
+        <item name="android:fontFamily">@font/pt_sans_bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/form_label_text_size</item>
     </style>
-
-    <style name="Theme.DeviceDefault.Light.Light.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar" />
 </resources>

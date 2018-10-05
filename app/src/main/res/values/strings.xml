@@ -1,3 +1,42 @@
 <resources>
-    <string name="app_name">StoreInventory</string>
+    <string name="app_name">Store Inventory</string>
+    <string name="product_details_label">Product Details</string>
+
+    <!-- menu text -->
+    <string name="insert_fake_data">Insert fake product</string>
+    <string name="delete_database">Delete database</string>
+    <string name="save_product_details">Save Product Details</string>
+    <string name="remove_product">Remove Product</string>
+
+    <!-- Main activity text -->
+    <string name="price_text">Price</string>
+    <string name="quantity_text">Quantity</string>
+
+    <!-- Product Editor Activity Text -->
+    <string name="product_name_text">Product Name</string>
+    <string name="product_name_hint">ex. iPhone</string>
+    <string name="product_description_text">Description</string>
+    <string name="product_description_hint">Add brief description of product</string>
+
+    <string name="product_price_text">Price</string>
+    <string name="product_price_hint">12.99</string>
+    <string name="product_in_stock_text">In stock</string>
+    <string name="product_in_stock_text_hint">ex. 100</string>
+    <string name="product_supplier_name_text">Supplier</string>
+    <string name="product_supplier_name_hint">Name</string>
+    <string name="product_supplier_phone_text">Supplier phone</string>
+    <string name="product_supplier_phone_hint">123-345-6789</string>
+
+    <!-- Product Edit AppBar Titles -->
+    <string name="add_product_title">Add new product</string>
+    <string name="edit_product_details">Edit product details</string>
+
+    <!-- Validation Toast messages -->
+    <string name="product_name_toast">Product name is required</string>
+    <string name="product_price_toast">Price should not be zero or have a negative dollar amount.</string>
+    <string name="product_quantity_toast">Product quantity should have a positive integer</string>
+    <string name="supplier_info_toast">Supplier information is required and must be included: name and phone.</string>
+    <string name="product_removed_success">Product removed from database</string>
+    <string name="product_deletion_failed">Product was not removed</string>
+
 </resources>

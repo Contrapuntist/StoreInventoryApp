@@ -11,11 +11,11 @@ public class InventoryDbHelper extends SQLiteOpenHelper {
     /**
      * Values for class constructor
      */
-    private static final String TABLE_NAME = "inventory.db";
+    private static final String DATABASE_NAME = "inventory.db";
     private static int DATABASE_VERSION = 1;
 
     public InventoryDbHelper(Context context) {
-        super(context, TABLE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override
