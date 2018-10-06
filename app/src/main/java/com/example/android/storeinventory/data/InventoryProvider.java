@@ -120,6 +120,8 @@ public class InventoryProvider extends ContentProvider {
             return null;
         }
 
+        getContext().getContentResolver().notifyChange(uri, null);
+
         return ContentUris.withAppendedId(uri, id);
     }
 
@@ -180,7 +182,6 @@ public class InventoryProvider extends ContentProvider {
             }
         }
 
-
         if (vals.size() == 0) {
             return 0;
         }
@@ -193,7 +194,9 @@ public class InventoryProvider extends ContentProvider {
         if (rowsUpdated != 0) {
             getContext().getContentResolver().notifyChange(InventoryContract.ProductEntry.CONTENT_URI, null);
         }
-
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
         return rowsUpdated;
     }
 
@@ -216,6 +219,9 @@ public class InventoryProvider extends ContentProvider {
                 throw new IllegalArgumentException("Delete is not allowed for uri " + uri);
         }
 
+        if (productsRemoved != 0 ) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
         return productsRemoved;
     }
 

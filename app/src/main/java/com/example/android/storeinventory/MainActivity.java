@@ -110,8 +110,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         vals.put(ProductEntry.SUPPLIER_NAME, "Fruity, Inc.");
         vals.put(ProductEntry.SUPPLIER_PHONE, "223-325-6655");
 
-        //long newRow = db.insert(ProductEntry.PRODUCTS_TABLE, null, vals);
-
         Uri newDbRow = getContentResolver().insert(ProductEntry.CONTENT_URI, vals);
         if (ContentUris.parseId(newDbRow) == -1) {
             Toast.makeText(this, "Error with adding dummy data", Toast.LENGTH_SHORT ).show();

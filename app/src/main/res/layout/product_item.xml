@@ -52,4 +52,16 @@
         android:layout_toRightOf="@id/quantity_text"
         tools:text="100" />
 
+    <ImageView
+        android:id="@+id/sale_btn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/product_name"
+        android:src="@drawable/ic_attach_money_white_24dp"
+        android:background="@drawable/background_circle"
+        android:layout_marginRight="@dimen/sixteen_dp"
+        android:padding="@dimen/four_dp"
+        android:contentDescription="sale button"/>
+
 </RelativeLayout>

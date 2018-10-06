@@ -143,4 +143,13 @@
 
     </LinearLayout>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/sixteen_dp"
+        android:fontFamily="@font/pt_sans"
+
+        android:textSize="14sp"
+        android:text="Call to Restock"/>
+
 </LinearLayout>
