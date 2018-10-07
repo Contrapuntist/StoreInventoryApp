@@ -3,8 +3,16 @@
     <dimen name="four_dp">4dp</dimen>
     <dimen name="eight_dp">8dp</dimen>
     <dimen name="sixteen_dp">16dp</dimen>
+    <dimen name="twenty_dp">20dp</dimen>
     <dimen name="thirty_two_dp">32dp</dimen>
+    <dimen name="hundred_dp">100dp</dimen>
+
+    <dimen name="icon_width_height_40">40dp</dimen>
 
     <dimen name="form_label_text_size">16sp</dimen>
+    <dimen name="product_name_list_text_size">24sp</dimen>
+    <dimen name="list_subtext_size">18sp</dimen>
+
+
 
 </resources>

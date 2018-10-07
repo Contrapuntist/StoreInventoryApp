@@ -47,7 +47,8 @@
             android:gravity="top|start"
             android:singleLine="false"
             android:lines="5"
-            android:background="#eeeeee"
+            android:background="@color/purple_blue_trans"
+            android:padding="@dimen/eight_dp"
             android:inputType="textMultiLine" />
 
     </LinearLayout>
@@ -144,12 +145,14 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/restock_call_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/sixteen_dp"
-        android:fontFamily="@font/pt_sans"
-
+        android:fontFamily="@font/pt_sans_bold"
+        android:textColor="@android:color/white"
+        android:background="@color/second_red"
         android:textSize="14sp"
-        android:text="Call to Restock"/>
+        android:text="@string/restock_btn_text"/>
 
 </LinearLayout>

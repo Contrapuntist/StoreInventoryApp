@@ -33,9 +33,13 @@
                         </option>
                         <option name="values">
                           <map>
+                            <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="ffffff" />
-                            <entry key="outputName" value="ic_done_white_24dp" />
-                            <entry key="sourceFile" value="C:\Users\contr" />
+                            <entry key="height" value="511" />
+                            <entry key="outputName" value="ic_inventory" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="C:\Users\contr\Downloads\design.svg" />
+                            <entry key="width" value="511" />
                           </map>
                         </option>
                       </PersistentState>

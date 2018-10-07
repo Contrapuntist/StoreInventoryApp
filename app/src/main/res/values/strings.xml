@@ -26,6 +26,7 @@
     <string name="product_supplier_name_hint">Name</string>
     <string name="product_supplier_phone_text">Supplier phone</string>
     <string name="product_supplier_phone_hint">123-345-6789</string>
+    <string name="restock_btn_text">Call to restock</string>
 
     <!-- Product Edit AppBar Titles -->
     <string name="add_product_title">Add new product</string>
@@ -39,4 +40,15 @@
     <string name="product_removed_success">Product removed from database</string>
     <string name="product_deletion_failed">Product was not removed</string>
 
+    <!-- sale button description -->
+    <string name="sale_btn_description">sale button</string>
+
+    <!--Empty view text-->
+    <string name="empty_view_text_top">Inventory is empty</string>
+    <string name="empty_view_text_bottom">Click on button below to begin adding items to your inventory</string>
+
+    <!-- confirm no save dialog -->
+    <string name="yes_button">Yes</string>
+    <string name="no_button">No</string>
+    <string name="discard_changes_message">Discard unsaved changed?</string>
 </resources>

@@ -56,11 +56,12 @@ public class ProductCursorAdapter extends CursorAdapter {
         quantityView.setText(Integer.toString(productQuantity));
 
         // sale button setup
-        ImageView saleBtn = (ImageView) view.findViewById(R.id.sale_btn);
+        final ImageView saleBtn = (ImageView) view.findViewById(R.id.sale_btn);
 
-//        if ( productQuantity == 0 ) {
-//            saleBtn.setVisibility(View.INVISIBLE);
-//        }
+        if ( productQuantity == 0 ) {
+            //saleBtn.setBackgroundColor(Integer.parseInt("#333333"));
+            saleBtn.setVisibility(View.INVISIBLE);
+        }
 
         saleBtn.setClickable(true);
         saleBtn.setOnClickListener(new View.OnClickListener() {

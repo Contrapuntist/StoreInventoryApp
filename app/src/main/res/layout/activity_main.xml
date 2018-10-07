@@ -21,8 +21,41 @@
         android:background="#aaaaaa"
         android:src="@drawable/ic_add_shopping_cart_white_24dp"/>
 
+    <RelativeLayout
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <!-- TODO: Add empty view in layout -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/inventory_icon_empty"
+            android:textAlignment="center"
+            android:fontFamily="@font/pt_sans_bold"
+            android:textSize="18sp"
+            android:padding="@dimen/thirty_two_dp"
+            android:text="Nothing in inventory"/>
+
+        <ImageView
+            android:id="@+id/inventory_icon_empty"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_inventory" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/inventory_icon_empty"
+            android:textAlignment="center"
+            android:fontFamily="@font/pt_sans_bold"
+            android:textSize="18sp"
+            android:padding="@dimen/thirty_two_dp"
+            android:text="Click on button below to begin adding items to your inventory"/>
+
+
+
+    </RelativeLayout>
 
 </RelativeLayout>
 

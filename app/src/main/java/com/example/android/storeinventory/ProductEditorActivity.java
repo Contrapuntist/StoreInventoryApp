@@ -1,9 +1,11 @@
 package com.example.android.storeinventory;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -12,13 +14,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,14 +48,19 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
     private EditText productQuantityEditText;
     private EditText productSupplierNameEditText;
     private EditText productSupplierPhoneEditText;
+    private Button callSupplierButton;
 
+    // setup global variables for database updates and
     private Uri productDataUri;
     Boolean isEditProduct;
     private static final int EDIT_PRODUCT_LOADER = 2;
     private InventoryDbHelper inventoryDbHelper;
-
     private boolean productHasChanged = false;
 
+    /**
+     * Listener for checking if any editable fields changes and changes
+     * isEditProduct to true, which is used for a dialog.
+     */
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -66,17 +76,18 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
 
         Intent intent = getIntent();
         productDataUri = intent.getData();
+        callSupplierButton = findViewById(R.id.restock_call_btn);
 
         if (productDataUri == null) {
             getSupportActionBar().setTitle(R.string.add_product_title);
             isEditProduct = false;
             invalidateOptionsMenu();
+            callSupplierButton.setVisibility(View.INVISIBLE);
+
        } else {
             getSupportActionBar().setTitle(R.string.edit_product_details);
             isEditProduct = true;
-
         }
-        //https://developer.android.com/reference/android/telephony/PhoneNumberUtils
 
         productNameEditText = findViewById(R.id.product_name_input);
         productDescriptionEditText = findViewById(R.id.product_description_input);
@@ -95,6 +106,10 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
         getLoaderManager().initLoader(EDIT_PRODUCT_LOADER, null, this);
     }
 
+    /**
+     * Save product method to SQL db
+     */
+
     private void saveProductDetails() {
 
         /* retrieve text from all EditText (form) views */
@@ -107,40 +122,9 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
         String productSupplierName = productSupplierNameEditText.getText().toString().trim();
         String productSupplierPhone = productSupplierPhoneEditText.getText().toString().trim();
 
-        /* validation section */
 
-        if (productDataUri != null && TextUtils.isEmpty(productName) 
-                && TextUtils.isEmpty(productDescription) && TextUtils.isEmpty(quantityText) && TextUtils.isEmpty(priceText) 
-                && TextUtils.isEmpty(productSupplierName) && TextUtils.isEmpty(productSupplierPhone)) {
-                return;
-        }
-
-        if (TextUtils.isEmpty(productName)) {
-            Toast.makeText(this, R.string.product_name_toast, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (TextUtils.isEmpty(priceText)) {
-            Toast.makeText(this, R.string.product_price_toast, Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            productPrice = Double.parseDouble(priceText);
-            if (productPrice < 0) {
-                Toast.makeText(this, R.string.product_price_toast, Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
-
-        if (TextUtils.isEmpty(quantityText)) {
-            Toast.makeText(this, R.string.product_quantity_toast, Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-            productQuantity = Integer.parseInt(quantityText);
-            if (productQuantity < 0) {
-                Toast.makeText(this, R.string.product_quantity_toast, Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
+        productPrice = Double.parseDouble(priceText);
+        productQuantity = Integer.parseInt(quantityText);
 
         // create Content values object and add row values
         ContentValues vals = new ContentValues();
@@ -170,7 +154,10 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
             }
         }
     }
-    
+
+    /**
+     * Delete product from SQL db
+     */
     private void removeProduct() {
         if (productDataUri != null) {
             int rowsRemoved = getContentResolver().delete(productDataUri, null, null);
@@ -216,6 +203,20 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
             case R.id.delete_product_action:
                 removeProduct();        
                 return true;
+            case android.R.id.home:
+                if (!productHasChanged) {
+                    NavUtils.navigateUpFromSameTask(ProductEditorActivity.this);
+                    return true;
+                }
+
+                DialogInterface.OnClickListener discardCheckListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        NavUtils.navigateUpFromSameTask(ProductEditorActivity.this);
+                    }
+                };
+                unsavedDialogDisplayDialog(discardCheckListener);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -237,7 +238,6 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
                     ProductEntry.PRODUCT_QUANTITY,
                     ProductEntry.SUPPLIER_NAME,
                     ProductEntry.SUPPLIER_PHONE};
-
 
             return new CursorLoader(this,
                     productDataUri,
@@ -264,7 +264,7 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
             double priceResult = data.getDouble(priceColIdx);
             Integer quantityResult = data.getInt(quantityColIdx);
             String supplierNameResult = data.getString(supplierNameColIdx);
-            String supplierPhoneResult = data.getString(supplierPhoneColIdx);
+            final String supplierPhoneResult = data.getString(supplierPhoneColIdx);
 
             productNameEditText.setText(nameResult);
             productDescriptionEditText.setText(descriptionResult);
@@ -273,6 +273,17 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
             productSupplierNameEditText.setText(supplierNameResult);
             productSupplierPhoneEditText.setText(supplierPhoneResult);
 
+            callSupplierButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String phoneFormatted = PhoneNumberUtils.formatNumber(supplierPhoneResult);
+                    Intent restockCallIntent = new Intent(Intent.ACTION_DIAL);
+                    restockCallIntent.setData(Uri.parse("tel:" + phoneFormatted));
+                    if (restockCallIntent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(restockCallIntent);
+                    }
+                }
+            });
         }
     }
 
@@ -284,5 +295,40 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
         productQuantityEditText.setText(null);
         productSupplierNameEditText.setText(null);
         productSupplierPhoneEditText.setText(null);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!productHasChanged) {
+            super.onBackPressed();
+            return;
+        }
+
+        DialogInterface.OnClickListener discardChangesListener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                };
+
+        unsavedDialogDisplayDialog(discardChangesListener);
+    }
+
+    private void unsavedDialogDisplayDialog (DialogInterface.OnClickListener listener) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        dialogBuilder.setMessage(R.string.discard_changes_message);
+        dialogBuilder.setPositiveButton(R.string.yes_button, listener);
+        dialogBuilder.setNegativeButton(R.string.no_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if( dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alert = dialogBuilder.create();
+        alert.show();
     }
 }

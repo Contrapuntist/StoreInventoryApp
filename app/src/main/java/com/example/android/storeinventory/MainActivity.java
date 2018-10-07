@@ -33,18 +33,14 @@ import java.net.URI;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private InventoryDbHelper inventoryDbHelper;
-    private SQLiteDatabase db;
-    private TextView logDbView;
     private ProductCursorAdapter productCursorAdapter;
     private static final int PRODUCT_LOADER = 1;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        inventoryDbHelper = new InventoryDbHelper(this);
 
         FloatingActionButton addItem = (FloatingActionButton) findViewById(R.id.add_new_product);
         addItem.setOnClickListener(new View.OnClickListener() {
@@ -55,10 +51,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        ListView listView = (ListView) findViewById(R.id.inventory_list);
-
-
-        // TODO: add emptyview
+        listView = (ListView) findViewById(R.id.inventory_list);
+        View emptyView = findViewById(R.id.empty_view);
+        listView.setEmptyView(emptyView);
 
         productCursorAdapter = new ProductCursorAdapter(this, null);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,6 +68,26 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         listView.setAdapter(productCursorAdapter);
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
+    }
+
+    /**
+     * Refreshes/Reloads ListVIew: Used to make sale button visible if
+     * quantity changed to above zero quantity.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        productCursorAdapter = new ProductCursorAdapter(this, null);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getBaseContext(), ProductEditorActivity.class);
+                Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
+                intent.setData(currentProductUri);
+                startActivity(intent);
+            }
+        });
+        listView.setAdapter(productCursorAdapter);
     }
 
     @Override
@@ -90,10 +105,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 insertDummyProduct();
                 return true;
             case R.id.delete_database:
-
-//              TODO: SETUP delete database call
-
-                Log.i("DELETE MENU BUTTON", "DELETE MENU BUTTON CLICKED");
+                deleteDatabase();
                 return true;
         }
 
@@ -118,80 +130,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }
     }
 
-    /**
-     * Method specific for this project to check db is adding rows
-     * and then log them within the console.
-     *
-     * Will be removed/updated for project 9 when full UI to display db.
-     *
-     */
-    private void logCompleteDb() {
-        db = inventoryDbHelper.getReadableDatabase();
-
-        String[] tableAllProjection = {
-                ProductEntry._ID,
-                ProductEntry.PRODUCT_NAME,
-                ProductEntry.PRODUCT_DESCRIPTION,
-                ProductEntry.PRODUCT_PRICE,
-                ProductEntry.PRODUCT_QUANTITY,
-                ProductEntry.SUPPLIER_NAME,
-                ProductEntry.SUPPLIER_PHONE
-        };
-
-        Cursor cursor = db.query(
-                ProductEntry.PRODUCTS_TABLE,
-                tableAllProjection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-
-        try {
-            // Log total rows in table
-            Log.i("CURSOR COUNT", "Total product entries: " + cursor.getCount());
-
-            // capture column indexes
-            int idColumnIdx = cursor.getColumnIndex(ProductEntry._ID);
-            int nameColumnIdx = cursor.getColumnIndex(ProductEntry.PRODUCT_NAME);
-            int descriptionColumnIdx = cursor.getColumnIndex(ProductEntry.PRODUCT_DESCRIPTION);
-            int priceColumnIdx = cursor.getColumnIndex(ProductEntry.PRODUCT_PRICE);
-            int quantityColumnIdx = cursor.getColumnIndex(ProductEntry.PRODUCT_QUANTITY);
-            int supplierNameColumnIdx = cursor.getColumnIndex(ProductEntry.SUPPLIER_NAME);
-            int supplierPhoneColumnIdx = cursor.getColumnIndex(ProductEntry.SUPPLIER_PHONE);
-
-            // Loop and retrieve each row
-            while (cursor.moveToNext()) {
-                int productId = cursor.getInt(idColumnIdx);
-                String productName = cursor.getString(nameColumnIdx);
-                String productDescription = cursor.getString(descriptionColumnIdx);
-                double productPrice = cursor.getDouble(priceColumnIdx);
-                int productQuantity = cursor.getInt(quantityColumnIdx);
-                String productSupplierName = cursor.getString(supplierNameColumnIdx);
-                String productSupplierPhone = cursor.getString(supplierPhoneColumnIdx);
-
-
-                String rowDetails = "*********************************\n"
-                        + "Product ID: " + productId + "\n"
-                        + "Product Name: " + productName + "\n"
-                        + "Product Description: " + productDescription + "\n"
-                        + "Product Price: " + Double.toString(productPrice) + "\n"
-                        + "Product Quantity: " + Integer.toString(productQuantity) + "\n"
-                        + "Product Supplier Name: " + productSupplierName + "\n"
-                        + "Product Supplier Phone: " + productSupplierPhone + "\n\n";
-
-                // log in terminal
-                Log.i("Product Row Log", rowDetails);
-
-                // log in activity_main
-                //logDbView.append(rowDetails);
-            }
-
-        } catch (SQLException ex) {
-            Log.e("SQL ERROR", "Error retreiving data from SQL db", ex);
-        } finally {
-            cursor.close();
+    private void deleteDatabase() {
+        int rowsDeleted = getContentResolver().delete(ProductEntry.CONTENT_URI, null, null);
+        if (rowsDeleted != 0) {
+            Toast.makeText(this, "All products deleted", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error deleting database", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -216,7 +160,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) { productCursorAdapter.swapCursor(data); }
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        productCursorAdapter.swapCursor(data);
+    }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
