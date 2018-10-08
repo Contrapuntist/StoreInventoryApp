@@ -122,12 +122,29 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
         String productSupplierName = productSupplierNameEditText.getText().toString().trim();
         String productSupplierPhone = productSupplierPhoneEditText.getText().toString().trim();
 
+        if (TextUtils.isEmpty(productName)) {
+            Toast.makeText(this, R.string.product_name_toast, Toast.LENGTH_LONG).show();
+            return;
+        } else if (TextUtils.isEmpty(priceText)) {
+            Toast.makeText(this, R.string.product_price_toast, Toast.LENGTH_LONG).show();
+            return;
+        } else if (TextUtils.isEmpty(quantityText)) {
+            Toast.makeText(this, R.string.product_quantity_toast, Toast.LENGTH_LONG).show();
+            return;
+        } else if (TextUtils.isEmpty(productSupplierName)) {
+            Toast.makeText(this, R.string.supplier_info_toast, Toast.LENGTH_LONG).show();
+            return;
+        } else if (TextUtils.isEmpty(productSupplierPhone)) {
+            Toast.makeText(this, R.string.supplier_info_toast, Toast.LENGTH_LONG).show();
+            return;
+        }
 
         productPrice = Double.parseDouble(priceText);
         productQuantity = Integer.parseInt(quantityText);
 
         // create Content values object and add row values
         ContentValues vals = new ContentValues();
+
         vals.put(ProductEntry.PRODUCT_NAME, productName);
         vals.put(ProductEntry.PRODUCT_DESCRIPTION, productDescription);
         vals.put(ProductEntry.PRODUCT_PRICE, productPrice);
@@ -196,7 +213,6 @@ public class ProductEditorActivity extends AppCompatActivity implements LoaderMa
 
         switch(item.getItemId()){
             case R.id.save_product_action:
-                Log.i("MENU SAVE", "SAVE CLICKED");
                 saveProductDetails();
                 finish();
                 return true;

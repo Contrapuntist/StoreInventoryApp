@@ -35,7 +35,7 @@
     <!-- Validation Toast messages -->
     <string name="product_name_toast">Product name is required</string>
     <string name="product_price_toast">Price should not be zero or have a negative dollar amount.</string>
-    <string name="product_quantity_toast">Product quantity should have a positive integer</string>
+    <string name="product_quantity_toast">Quantity required and be zero or above</string>
     <string name="supplier_info_toast">Supplier information is required and must be included: name and phone.</string>
     <string name="product_removed_success">Product removed from database</string>
     <string name="product_deletion_failed">Product was not removed</string>
